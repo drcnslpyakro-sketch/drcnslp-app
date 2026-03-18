@@ -7,6 +7,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>DRCNSLP-YAKRO · Bénéficiaires</title>
+
+<!-- ══ PWA MANIFEST INLINE ══════════════════════════════════════════════════ -->
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22DRCNSLP-YAKRO%20B%C3%A9n%C3%A9ficiaires%22%2C%22short_name%22%3A%22DRCNSLP%22%2C%22description%22%3A%22Collecte%20b%C3%A9n%C3%A9ficiaires%20AGR%20%E2%80%94%20FCIL%202025%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f4f6fb%22%2C%22theme_color%22%3A%22%23003087%22%2C%22orientation%22%3A%22portrait-primary%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABmJLR0QA%2FwD%2FAP%2BgvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH6AgQDCIwlK6bvQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAGUSURBVHja7dAxAQAACMCy7U9uCW%2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC4FQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgFQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgFQABtlF90AAAAAElFTkSuQmCC%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
+<meta name="apple-mobile-web-app-title" content="DRCNSLP">
+<meta name="mobile-web-app-capable" content="yes">
+
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -237,6 +243,10 @@ body{font-family:var(--font);background:var(--paper);color:var(--ink);min-height
   border-radius:8px;font-family:var(--font);font-size:13px;outline:none}
 .opt-item input:focus{border-color:var(--blue)}
 
+/* GPS MANUAL MODAL */
+.gps-manual-hint{font-size:11px;color:var(--amber);background:var(--amber-l);
+  border:1px solid #f59e0b;border-radius:8px;padding:9px 12px;margin-bottom:14px;line-height:1.5}
+
 /* PW strength */
 .pw-strength{height:4px;background:var(--border);border-radius:2px;margin-top:5px;overflow:hidden}
 .pw-bar{height:100%;border-radius:2px;transition:width .3s,background .3s}
@@ -249,6 +259,38 @@ body{font-family:var(--font);background:var(--paper);color:var(--ink);min-height
   animation:toastIn .22s ease;pointer-events:auto}
 .toast.ok{background:var(--green)}.toast.warn{background:#c27800}.toast.err{background:var(--red)}
 @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* INSTALL BANNER */
+#installBanner{display:none;position:fixed;bottom:0;left:0;right:0;z-index:900;
+  background:var(--blue);color:#fff;padding:14px 20px;
+  align-items:center;justify-content:space-between;gap:12px;
+  box-shadow:0 -4px 20px rgba(0,48,135,.25)}
+#installBanner.show{display:flex}
+.ib-left{display:flex;align-items:center;gap:12px}
+.ib-icon{width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ib-title{font-size:13px;font-weight:700;line-height:1.3}
+.ib-sub{font-size:11px;opacity:.7;margin-top:2px}
+.ib-btns{display:flex;gap:8px;flex-shrink:0}
+.ib-btn-install{background:#fff;color:var(--blue);border:none;border-radius:8px;
+  padding:9px 18px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;
+  transition:all .15s}
+.ib-btn-install:hover{background:var(--blue-l)}
+.ib-btn-close{background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:8px;
+  padding:9px 13px;font-family:var(--font);font-size:13px;cursor:pointer;
+  transition:background .15s}
+.ib-btn-close:hover{background:rgba(255,255,255,.25)}
+/* Bouton install dans la topbar */
+#installTopBtn{display:none;align-items:center;gap:5px;background:rgba(255,255,255,.15);
+  color:#fff;border:none;border-radius:7px;padding:5px 11px;font-family:var(--font);
+  font-size:11px;font-weight:600;cursor:pointer;transition:background .15s}
+#installTopBtn.show{display:flex}
+#installTopBtn:hover{background:rgba(255,255,255,.25)}
+/* Indicateur premier démarrage */
+#firstRunBanner{display:none;background:var(--green-l);border:1.5px solid var(--green);
+  border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;font-size:13px;
+  color:var(--green);line-height:1.6}
+#firstRunBanner.show{display:block}
+#firstRunBanner strong{font-weight:700}
 /* PHOTO & GPS */
 .media-section{margin:20px 0 0;padding:16px;background:var(--white);
   border:1.5px solid var(--border);border-radius:var(--radius)}
@@ -293,7 +335,27 @@ body{font-family:var(--font);background:var(--paper);color:var(--ink);min-height
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="brand" id="brandName">DRCNSLP-YAKRO <span id="brandSub">Bénéficiaires AGR</span></div>
-  <div class="net-pill"><div class="dot" id="netDot"></div><span id="netLabel">…</span></div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <button id="installTopBtn" onclick="triggerInstall()" title="Installer l'application">
+      ⬇ Installer
+    </button>
+    <div class="net-pill"><div class="dot" id="netDot"></div><span id="netLabel">…</span></div>
+  </div>
+</div>
+
+<!-- BANNIÈRE D'INSTALLATION PWA -->
+<div id="installBanner">
+  <div class="ib-left">
+    <div class="ib-icon">📱</div>
+    <div>
+      <div class="ib-title">Installer DRCNSLP-YAKRO</div>
+      <div class="ib-sub">Accès rapide depuis l'écran d'accueil — fonctionne hors ligne</div>
+    </div>
+  </div>
+  <div class="ib-btns">
+    <button class="ib-btn-install" onclick="triggerInstall()">⬇ Installer</button>
+    <button class="ib-btn-close" onclick="dismissInstall()">✕</button>
+  </div>
 </div>
 
 <!-- SYNC BANNER -->
@@ -316,6 +378,13 @@ body{font-family:var(--font);background:var(--paper);color:var(--ink);min-height
 
   <!-- ══ FORMULAIRE ══════════════════════════════════════════ -->
   <div class="panel active" id="panel-form">
+    <!-- BANNIÈRE PREMIER DÉMARRAGE -->
+    <div id="firstRunBanner">
+      <strong>👋 Bienvenue sur DRCNSLP-YAKRO !</strong><br>
+      Pour commencer, allez dans <strong>⚙️ Configuration</strong> (mot de passe : <strong>admin2025</strong>)
+      et collez l'URL Apps Script dans le champ Synchronisation. Changez ensuite le mot de passe.
+    </div>
+
     <div class="progress-wrap" id="progressWrap">
       <div class="progress-bar" id="progressBar" style="width:0%"></div>
     </div>
@@ -599,6 +668,37 @@ body{font-family:var(--font);background:var(--paper);color:var(--ink);min-height
   </div>
 </div>
 
+<!-- MODAL GPS MANUEL -->
+<div class="modal-overlay" id="gpsManualOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>📍 Position GPS</h2>
+      <button class="modal-close" onclick="closeModal('gpsManualOverlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="gps-manual-hint">
+        ⚠️ La géolocalisation automatique est indisponible (permission refusée ou connexion non sécurisée).<br>
+        Vous pouvez saisir les coordonnées manuellement (ex: depuis Google Maps → appui long → copier les coordonnées).
+      </div>
+      <div class="frow">
+        <div class="field">
+          <label>Latitude</label>
+          <input type="number" id="gpsManualLat" placeholder="Ex: 6.82054" step="0.00001" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label>Longitude</label>
+          <input type="number" id="gpsManualLng" placeholder="Ex: -5.27474" step="0.00001" inputmode="decimal">
+        </div>
+      </div>
+      <div id="gpsManualErr" style="font-size:12px;color:var(--red);font-weight:600;min-height:18px"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-reset btn-sm" onclick="closeModal('gpsManualOverlay')">Ignorer</button>
+      <button class="btn btn-primary btn-sm" onclick="saveGpsManual()">📍 Enregistrer</button>
+    </div>
+  </div>
+</div>
+
 <div id="toasts"></div>
 
 <script>
@@ -673,6 +773,124 @@ let editingFldId = null;
 let editingSecForFld = null;
 
 // ══════════════════════════════════════════════════════════════
+//  PWA — INSTALLATION & SERVICE WORKER
+// ══════════════════════════════════════════════════════════════
+let deferredInstallPrompt = null;
+
+// Intercepter l'événement beforeinstallprompt (Chrome/Edge/Android)
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  // Afficher le bouton topbar et la bannière si pas encore installé
+  if (!isAppInstalled()) {
+    document.getElementById('installTopBtn').classList.add('show');
+    // Délai pour ne pas afficher la bannière immédiatement
+    setTimeout(() => {
+      if (!localStorage.getItem('install_dismissed')) {
+        document.getElementById('installBanner').classList.add('show');
+      }
+    }, 3000);
+  }
+});
+
+// Détecter si déjà installée comme PWA standalone
+function isAppInstalled() {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+         window.navigator.standalone === true;
+}
+
+// Déclencher l'installation
+async function triggerInstall() {
+  if (deferredInstallPrompt) {
+    // Chrome/Edge/Android — prompt natif
+    deferredInstallPrompt.prompt();
+    const { outcome } = await deferredInstallPrompt.userChoice;
+    if (outcome === 'accepted') {
+      document.getElementById('installTopBtn').classList.remove('show');
+      document.getElementById('installBanner').classList.remove('show');
+      toast('✅ Application installée !', 'ok');
+    }
+    deferredInstallPrompt = null;
+  } else if (/iPhone|iPad/i.test(navigator.userAgent) && !window.navigator.standalone) {
+    // iOS Safari — instructions manuelles
+    showIosInstallModal();
+  } else if (isAppInstalled()) {
+    toast('✅ Application déjà installée', 'ok');
+  } else {
+    // Fallback : guider l'utilisateur
+    toast('Ouvrez ce site dans Chrome ou Safari et utilisez "Ajouter à l\'écran d\'accueil"', 'warn');
+  }
+}
+
+function dismissInstall() {
+  localStorage.setItem('install_dismissed', '1');
+  document.getElementById('installBanner').classList.remove('show');
+}
+
+// L'app a été installée
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  document.getElementById('installTopBtn').classList.remove('show');
+  document.getElementById('installBanner').classList.remove('show');
+  toast('✅ DRCNSLP-YAKRO installée sur cet appareil', 'ok');
+});
+
+// Modal iOS
+function showIosInstallModal() {
+  const existing = document.getElementById('iosModal');
+  if (existing) { existing.classList.add('open'); return; }
+  const div = document.createElement('div');
+  div.id = 'iosModal';
+  div.className = 'modal-overlay open';
+  div.innerHTML = `<div class="modal">
+    <div class="modal-head"><h2>📱 Installer sur iPhone / iPad</h2>
+      <button class="modal-close" onclick="closeModal('iosModal')">✕</button></div>
+    <div class="modal-body" style="font-size:14px;line-height:1.8;color:var(--ink-2)">
+      <p style="margin-bottom:12px">Safari ne supporte pas l'installation automatique. Voici la procédure :</p>
+      <p><strong>1.</strong> Appuyez sur l'icône <strong>Partager</strong> 📤 en bas de l'écran</p>
+      <p><strong>2.</strong> Faites défiler et appuyez sur <strong>« Sur l'écran d'accueil »</strong></p>
+      <p><strong>3.</strong> Appuyez sur <strong>« Ajouter »</strong></p>
+      <p style="margin-top:12px;font-size:12px;color:var(--ink-3);font-style:italic">
+        L'icône DRCNSLP-YAKRO apparaîtra sur votre écran d'accueil.</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-primary btn-sm" onclick="closeModal('iosModal')">Compris</button>
+    </div>
+  </div>`;
+  document.body.appendChild(div);
+}
+
+// Enregistrement du Service Worker (cache hors ligne)
+if ('serviceWorker' in navigator) {
+  const SW_CODE = `
+const CACHE = 'drcnslp-v1';
+const ASSETS = [location.href];
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+});
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(keys =>
+    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+  ).then(() => self.clients.claim()));
+});
+self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+  e.respondWith(
+    fetch(e.request).then(r => {
+      const clone = r.clone();
+      caches.open(CACHE).then(c => c.put(e.request, clone));
+      return r;
+    }).catch(() => caches.match(e.request))
+  );
+});`;
+  const swBlob = new Blob([SW_CODE], { type: 'application/javascript' });
+  const swUrl  = URL.createObjectURL(swBlob);
+  navigator.serviceWorker.register(swUrl, { scope: './' })
+    .then(() => console.log('[SW] Enregistré'))
+    .catch(e => console.warn('[SW] Échec (normal si fichier local):', e.message));
+}
+
+// ══════════════════════════════════════════════════════════════
 //  BOOT
 // ══════════════════════════════════════════════════════════════
 window.addEventListener('load', () => {
@@ -684,6 +902,16 @@ window.addEventListener('load', () => {
   updateNet();
   updateBadge();
   updateBanner();
+  // Détecter premier démarrage (URL non configurée)
+  const _bootCfg = loadCfg();
+  if (!_bootCfg.url) {
+    document.getElementById('firstRunBanner').classList.add('show');
+  }
+  // Masquer la bannière si app déjà installée en standalone
+  if (isAppInstalled()) {
+    document.getElementById('installTopBtn').classList.remove('show');
+    document.getElementById('installBanner').classList.remove('show');
+  }
   window.addEventListener('online',  () => { updateNet(); onReconnect(); });
   window.addEventListener('offline', () => { updateNet(); updateBanner(); });
   setInterval(() => {
@@ -807,6 +1035,11 @@ function saveSyncCfg() {
   cfg.syncMode = document.getElementById('cfg_syncMode').value;
   cfg.interval = parseInt(document.getElementById('cfg_interval').value) || 5;
   saveCfg(cfg);
+  // Masquer la bannière premier démarrage si URL maintenant configurée
+  if (cfg.url) {
+    const fb = document.getElementById('firstRunBanner');
+    if (fb) fb.classList.remove('show');
+  }
   const el = document.getElementById('syncStatus');
   el.style.color = cfg.url ? 'var(--green)' : 'var(--red)';
   el.textContent = cfg.url ? '✅ URL enregistrée.' : '⚠️ Aucune URL configurée.';
@@ -830,13 +1063,15 @@ async function testConnection() {
   if (!url) { toast('Entrez l\'URL d\'abord', 'err'); return; }
   el.textContent = '⏳ Test en cours…'; el.style.color = 'var(--ink-3)';
   try {
-    const res = await fetch(url, { method:'GET' });
-    const json = await res.json().catch(() => ({}));
-    if (res.ok && json.status === 'ok') {
+    const res  = await fetch(url, { method: 'GET' });
+    const text = await res.text();
+    let json = {};
+    try { json = JSON.parse(text); } catch(_) {}
+    if (json.status === 'ok') {
       el.style.color = 'var(--green)'; el.textContent = '✅ Connexion opérationnelle.';
       toast('Connexion OK', 'ok');
     } else {
-      el.style.color = 'var(--amber)'; el.textContent = '⚠️ Réponse inattendue (HTTP ' + res.status + ').';
+      el.style.color = 'var(--amber)'; el.textContent = '⚠️ Réponse inattendue : ' + text.substring(0,80);
       toast('Réponse inattendue', 'warn');
     }
   } catch(e) {
@@ -1326,15 +1561,30 @@ function clearPhoto() {
 //  GPS — géolocalisation
 // ══════════════════════════════════════════════════════════════
 function captureGPS() {
-  if (currentGps) { clearGPS(); return; } // toggle off si déjà capturé
-  if (!navigator.geolocation) { toast('GPS non disponible sur cet appareil', 'err'); return; }
-  const trigger  = document.getElementById('gpsTrigger');
-  const spinner  = document.getElementById('gpsSpinner');
-  const ico      = document.getElementById('gpsTriggerIco');
-  const txt      = document.getElementById('gpsTriggerTxt');
+  if (currentGps) { clearGPS(); return; }
+
+  // ── Vérification HTTPS (requis par les navigateurs pour la géoloc) ──────────
+  const isSecure = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  if (!isSecure) {
+    // Proposer saisie manuelle si contexte non sécurisé
+    openGpsManual();
+    return;
+  }
+
+  if (!navigator.geolocation) {
+    toast('📍 GPS non disponible — saisie manuelle', 'warn');
+    openGpsManual();
+    return;
+  }
+
+  const trigger = document.getElementById('gpsTrigger');
+  const spinner = document.getElementById('gpsSpinner');
+  const ico     = document.getElementById('gpsTriggerIco');
+  const txt     = document.getElementById('gpsTriggerTxt');
   spinner.style.display = 'block';
   ico.style.display     = 'none';
   txt.textContent       = 'Localisation en cours…';
+
   navigator.geolocation.getCurrentPosition(
     pos => {
       currentGps = {
@@ -1358,11 +1608,43 @@ function captureGPS() {
       spinner.style.display = 'none';
       ico.style.display     = 'block';
       txt.textContent       = 'Capturer la position';
-      const msgs = {1:'Permission refusée', 2:'Position indisponible', 3:'Délai expiré'};
-      toast('GPS : ' + (msgs[err.code] || err.message), 'err');
+      if (err.code === 1) {
+        // Permission refusée → proposer saisie manuelle
+        toast('📍 Permission GPS refusée — saisie manuelle disponible', 'warn');
+        openGpsManual();
+      } else {
+        const msgs = {2:'Position indisponible', 3:'Délai expiré (réessayez en extérieur)'};
+        toast('GPS : ' + (msgs[err.code] || err.message), 'err');
+        openGpsManual();
+      }
     },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
   );
+}
+
+function openGpsManual() {
+  document.getElementById('gpsManualOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('gpsManualLat').focus(), 200);
+}
+
+function saveGpsManual() {
+  const lat = parseFloat(document.getElementById('gpsManualLat').value.replace(',','.'));
+  const lng = parseFloat(document.getElementById('gpsManualLng').value.replace(',','.'));
+  const err = document.getElementById('gpsManualErr');
+  if (isNaN(lat) || lat < -90  || lat > 90)  { err.textContent = 'Latitude invalide (ex: 6.82054)'; return; }
+  if (isNaN(lng) || lng < -180 || lng > 180) { err.textContent = 'Longitude invalide (ex: -5.27474)'; return; }
+  err.textContent = '';
+  currentGps = { lat, lng, acc: 999, ts: new Date().toLocaleString('fr-CI'), manual: true };
+  const trigger = document.getElementById('gpsTrigger');
+  trigger.classList.add('has-gps');
+  document.getElementById('gpsTriggerIco').textContent = '📍';
+  document.getElementById('gpsTriggerTxt').textContent  = 'Position saisie manuellement';
+  document.getElementById('gpsCoords').textContent      = lat.toFixed(5) + ', ' + lng.toFixed(5) + ' (manuel)';
+  document.getElementById('gpsDel').classList.add('show');
+  document.getElementById('gpsManualOverlay').classList.remove('open');
+  document.getElementById('gpsManualLat').value = '';
+  document.getElementById('gpsManualLng').value = '';
+  toast('📍 Position enregistrée manuellement', 'ok');
 }
 
 function clearGPS() {
@@ -1459,19 +1741,28 @@ async function syncOne(id, silent=false) {
   const q = getQueue(), idx = q.findIndex(r => r.id === id);
   if (idx === -1) return false;
   q[idx].status = 'syncing'; saveQueue(q); renderQueue();
+  const body = JSON.stringify({...q[idx].data, _id:q[idx].id, _ts:q[idx].timestamp});
   try {
+    // Apps Script suit une redirection 302 → il faut follow:'follow' (défaut)
+    // et ne pas envoyer Content-Type application/json (bloque le preflight CORS)
+    // → on envoie en text/plain, le GAS reçoit quand même le JSON via postData.contents
     const resp = await fetch(cfg.url, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({...q[idx].data, _id:q[idx].id, _ts:q[idx].timestamp})
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: body
     });
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    const json = await resp.json().catch(() => ({}));
-    if (json.status === 'error') throw new Error(json.message || 'Erreur serveur');
+    // Apps Script renvoie toujours 200 même en cas d'erreur métier
+    const text = await resp.text();
+    let json = {};
+    try { json = JSON.parse(text); } catch(_) {}
+    if (json.status === 'error') throw new Error(json.message || 'Erreur Apps Script');
     q[idx].status = 'synced'; q[idx].syncedAt = new Date().toISOString();
-    if (!silent) toast('✅ Synchronisé', 'ok');
+    if (!silent) toast('✅ Synchronisé (ligne ' + (json.row||'?') + ')', 'ok');
   } catch(e) {
-    q[idx].status = 'error'; q[idx].retries = (q[idx].retries||0)+1; q[idx].lastError = e.message;
+    q[idx].status = 'error';
+    q[idx].retries = (q[idx].retries||0)+1;
+    q[idx].lastError = e.message || 'Erreur réseau';
+    if (!silent) toast('❌ Échec sync : ' + q[idx].lastError, 'err');
   }
   saveQueue(q);
   updateBadge(); updateBanner(); updateStats();
