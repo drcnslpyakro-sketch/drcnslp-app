@@ -684,9 +684,10 @@ window.addEventListener('load', () => {
   updateBanner();
   window.addEventListener('online',  () => { updateNet(); onReconnect(); });
   window.addEventListener('offline', () => { updateNet(); updateBanner(); });
-  const cfg = loadCfg();
-  setInterval(() => { if (navigator.onLine && cfg.syncMode !== 'manual') syncAll(true); },
-    ((cfg.interval || 5) * 60000));
+  setInterval(() => {
+    const liveCfg = loadCfg();
+    if (navigator.onLine && liveCfg.syncMode !== 'manual') syncAll(true);
+  }, ((loadCfg().interval || 5) * 60000));
 });
 
 // ══════════════════════════════════════════════════════════════
@@ -827,9 +828,15 @@ async function testConnection() {
   if (!url) { toast('Entrez l\'URL d\'abord', 'err'); return; }
   el.textContent = '⏳ Test en cours…'; el.style.color = 'var(--ink-3)';
   try {
-    await fetch(url + '?action=ping', { method:'GET', mode:'no-cors' });
-    el.style.color = 'var(--green)'; el.textContent = '✅ Connexion opérationnelle.';
-    toast('Connexion OK', 'ok');
+    const res = await fetch(url, { method:'GET' });
+    const json = await res.json().catch(() => ({}));
+    if (res.ok && json.status === 'ok') {
+      el.style.color = 'var(--green)'; el.textContent = '✅ Connexion opérationnelle.';
+      toast('Connexion OK', 'ok');
+    } else {
+      el.style.color = 'var(--amber)'; el.textContent = '⚠️ Réponse inattendue (HTTP ' + res.status + ').';
+      toast('Réponse inattendue', 'warn');
+    }
   } catch(e) {
     el.style.color = 'var(--red)'; el.textContent = '❌ Échec — vérifiez l\'URL.';
     toast('Connexion échouée', 'err');
@@ -1193,8 +1200,14 @@ function submitForm() {
   saveQueue(q);
   updateBadge(); updateBanner(); updateStats(); resetForm();
   toast('💾 Bénéficiaire n°' + q.length + ' enregistré !', 'ok');
-  if (navigator.onLine && loadCfg().syncMode !== 'manual') setTimeout(() => syncOne(record.id, true), 600);
-  else if (!navigator.onLine) toast('📴 Hors ligne — sync à la reconnexion', 'warn');
+  const liveCfg = loadCfg();
+  if (navigator.onLine && liveCfg.syncMode !== 'manual' && liveCfg.url) {
+    setTimeout(() => syncOne(record.id, true), 600);
+  } else if (!navigator.onLine) {
+    toast('📴 Hors ligne — sync à la reconnexion', 'warn');
+  } else if (!liveCfg.url) {
+    toast('⚠️ URL non configurée — données en attente', 'warn');
+  }
 }
 
 function resetForm() {
@@ -1445,11 +1458,14 @@ async function syncOne(id, silent=false) {
   if (idx === -1) return false;
   q[idx].status = 'syncing'; saveQueue(q); renderQueue();
   try {
-    await fetch(cfg.url, {
-      method:'POST', mode:'no-cors',
+    const resp = await fetch(cfg.url, {
+      method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({...q[idx].data, _id:q[idx].id, _ts:q[idx].timestamp})
     });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const json = await resp.json().catch(() => ({}));
+    if (json.status === 'error') throw new Error(json.message || 'Erreur serveur');
     q[idx].status = 'synced'; q[idx].syncedAt = new Date().toISOString();
     if (!silent) toast('✅ Synchronisé', 'ok');
   } catch(e) {
