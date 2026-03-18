@@ -624,7 +624,7 @@ const DEFAULT_SCHEMA = {
         {id:'f2', label:'Numéro de téléphone', type:'tel', placeholder:'07 XX XX XX XX', required:true, visible:true, width:'half', regex:'[0-9]{10}'},
         {id:'f3', label:'Sexe', type:'select', placeholder:'', required:true, visible:true, width:'third', regex:'', options:['Féminin (F)','Masculin (H)']},
         {id:'f4', label:'Âge', type:'number', placeholder:'Ex: 32', required:true, visible:true, width:'third', regex:'', min:15, max:99},
-        {id:'f5', label:'Cycles d\'épargne réalisés', type:'select', placeholder:'', required:true, visible:true, width:'third', regex:'', options:['0 — Aucun cycle réalisé','1 cycle','2 cycles','3 cycles','4 cycles','5 cycles et plus']},
+        {id:'f5', label:'Nombre de cycles d\'épargne déjà réalisés', type:'select', placeholder:'', required:true, visible:true, width:'third', regex:'', options:['0 — Aucun cycle réalisé','1 cycle','2 cycles','3 cycles','4 cycles','5 cycles et plus']},
       ]
     },
     {
@@ -642,8 +642,9 @@ const DEFAULT_SCHEMA = {
       desc:'Informations sur votre implication dans le projet.',
       fields:[
         {id:'f9', label:'Type d\'AGR collective souhaitée', type:'checkbox', placeholder:'', required:true, visible:true, width:'full', regex:'', options:['Maraîchage collectif','Élevage avicole (poulets)','Transformation agro-alimentaire','Petit commerce collectif','Autre']},
-        {id:'f10', label:'Disponibilité hebdomadaire', type:'select', placeholder:'', required:true, visible:true, width:'half', regex:'', options:['Moins de 10 heures/semaine','Entre 10 et 20 heures/semaine','Plus de 20 heures/semaine','Disponible à temps plein']},
-        {id:'f11', label:'Expérience antérieure', type:'select', placeholder:'', required:true, visible:true, width:'half', regex:'', options:['Oui — expérience personnelle (AGR individuelle)','Oui — expérience au sein d\'un groupe / AVEC','Non — première expérience']},
+        {id:'f10', label:'Disponibilité hebdomadaire pour l\'AGR', type:'select', placeholder:'', required:true, visible:true, width:'half', regex:'', options:['Moins de 10 heures/semaine','Entre 10 et 20 heures/semaine','Plus de 20 heures/semaine','Disponible à temps plein']},
+        {id:'f11', label:'Avez-vous une expérience antérieure dans une activité économique ?', type:'select', placeholder:'', required:true, visible:true, width:'half', regex:'', options:['Oui — expérience personnelle (AGR individuelle)','Oui — expérience au sein d\'un groupe / AVEC','Non — première expérience']},
+        {id:'f11b', label:'Formations reçues dans le cadre du projet DRCNSLP-YAKRO', type:'checkbox', placeholder:'', required:false, visible:true, width:'full', regex:'', options:['Formation en éducation entrepreneuriale','Formation en marketing et ventes','Formation en gestion financière (tenue de caisse)','Formation en élaboration de plan d\'affaires','Aucune formation reçue à ce jour']},
       ]
     },
     {
@@ -652,7 +653,8 @@ const DEFAULT_SCHEMA = {
       fields:[
         {id:'f12', label:'Niveau d\'instruction', type:'select', placeholder:'', required:false, visible:true, width:'half', regex:'', options:['Non scolarisé(e)','Primaire (CP1 – CM2)','Secondaire (6ème – Terminale)','Formation professionnelle','Supérieur (Université / BTS)']},
         {id:'f13', label:'Situation matrimoniale', type:'select', placeholder:'', required:false, visible:true, width:'half', regex:'', options:['Célibataire','Mariée / En union','Divorcée / Séparée','Veuve / Veuf']},
-        {id:'f14', label:'Observations', type:'textarea', placeholder:'Précisions utiles…', required:false, visible:true, width:'full', regex:''},
+        {id:'f13b', label:'Nombre de personnes à votre charge (enfants, parents...)', type:'number', placeholder:'0 si aucune', required:false, visible:true, width:'half', regex:'', min:0, max:30},
+        {id:'f14', label:'Observations / Informations complémentaires', type:'textarea', placeholder:'Précisions utiles…', required:false, visible:true, width:'full', regex:''},
       ]
     }
   ]
